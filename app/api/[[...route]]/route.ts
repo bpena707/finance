@@ -11,9 +11,13 @@ export const runtime = 'edge';
 
 const app = new Hono().basePath('/api')
 
-app.route("/accounts", accounts)
+const routes = app
+    .route('/accounts', accounts)
 
 
 //allows hono to use the route handlers
 export const GET = handle(app)
 export const POST = handle(app)
+
+//to generate the rpc type
+export type AppType = typeof routes
