@@ -2,6 +2,7 @@ import { InferRequestType, InferResponseType } from "hono";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from "@/lib/hono";
+import {toast} from "sonner";
 
 // The request type is inferred from the client.api.accounts.$post function either gives an error or data
 type ResponseType = InferResponseType<typeof client.api.accounts.$post>;
@@ -23,12 +24,15 @@ export const useCreateAccount = () => {
       },
       onSuccess: () => {
           //refetch all accounts after creating a new account
+          toast.success("Account created successfully");
             queryClient.invalidateQueries({ queryKey: ["accounts"] });
       },
-      onError: (error) => {
-
+      onError: () => {
+          toast.error("Failed to create account");
       }
   });
+
+  return mutation;
 
 
 };

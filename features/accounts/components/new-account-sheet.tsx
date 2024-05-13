@@ -10,6 +10,7 @@ import {useNewAccount} from "@/features/hooks/use-new-account";
 import {AccountForm} from "@/features/accounts/components/account-form";
 import {insertAccountSchema} from "@/db/schema";
 import {z} from "zod";
+import {useCreateAccount} from "@/features/hooks/use-create-account";
 
 const formSchema = insertAccountSchema.pick({
     name: true,
@@ -20,8 +21,15 @@ type FormValues = z.input<typeof formSchema>
 export const NewAccountSheet = () => {
     const {isOpen, onClose} = useNewAccount()
 
+    const mutation = useCreateAccount()
+
+    // the mutation hook will handle the form submission. object is used to continue on success and close sheet
     const onSubmit = (values: FormValues) => {
-        console.log({values})
+        mutation.mutate(values, {
+            onSuccess: () => {
+                onClose()
+            }
+        })
     }
 
   return(
@@ -35,7 +43,7 @@ export const NewAccountSheet = () => {
               </SheetHeader>
                 <AccountForm
                     onSubmit={onSubmit}
-                    disabled={false}
+                    disabled={mutation.isPending}
                     defaultValues={{name: ''}}
                 />
           </SheetContent>
