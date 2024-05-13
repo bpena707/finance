@@ -8,9 +8,21 @@ import {
 } from "@/components/ui/sheet"
 import {useNewAccount} from "@/features/hooks/use-new-account";
 import {AccountForm} from "@/features/accounts/components/account-form";
+import {insertAccountSchema} from "@/db/schema";
+import {z} from "zod";
+
+const formSchema = insertAccountSchema.pick({
+    name: true,
+})
+
+type FormValues = z.input<typeof formSchema>
 
 export const NewAccountSheet = () => {
     const {isOpen, onClose} = useNewAccount()
+
+    const onSubmit = (values: FormValues) => {
+        console.log({values})
+    }
 
   return(
       <Sheet open={isOpen} onOpenChange={onClose} >
@@ -21,7 +33,11 @@ export const NewAccountSheet = () => {
                       Create a new account to track your transactions.
                   </SheetDescription>
               </SheetHeader>
-                <AccountForm onSubmit={() => {}} disabled={false} />
+                <AccountForm
+                    onSubmit={onSubmit}
+                    disabled={false}
+                    defaultValues={{name: ''}}
+                />
           </SheetContent>
       </Sheet>
   )

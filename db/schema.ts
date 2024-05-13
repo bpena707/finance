@@ -8,5 +8,7 @@ export const accounts = pgTable("accounts", {
     userId: text('user_id').notNull(),
 })
 
+
+// Schema for inserting a user - can be used to validate API requests
 export const insertAccountSchema = createInsertSchema(accounts)
 
