@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/table"
 import {Button} from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
+import {useState} from "react";
+
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -35,10 +37,12 @@ columns,
 data,
     filterKey
 }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
     )
+
+    const [rowSelection, setRowSelection] = useState({})
 
     const table = useReactTable({
         data,
@@ -49,9 +53,11 @@ data,
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        onRowSelectionChange: setRowSelection,
         state: {
             sorting,
             columnFilters,
+            rowSelection,
         },
     })
 
@@ -112,6 +118,10 @@ data,
                 </Table>
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
+                <div className="flex-1 text-sm text-muted-foreground">
+                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
+                    {table.getFilteredRowModel().rows.length} row(s) selected.
+                </div>
                 <Button
                     variant="outline"
                     size="sm"
