@@ -9,8 +9,33 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import {Button} from "@/components/ui/button";
+import {DataTable} from "@/components/ui/data-table";
 import {Plus} from "lucide-react";
 import {useNewAccount} from "@/features/hooks/use-new-account";
+import {Payment, columns} from "@/app/(dashboard)/accounts/columns";
+
+async function getData(): Promise<Payment[]> {
+    // Fetch data from your API here.
+    return [
+        {
+            id: "728ed52f",
+            amount: 100,
+            status: "pending",
+            email: "m@example.com",
+        },
+        // ...
+    ]
+}
+
+const data: Payment[] = [
+    {
+        id: "728ed52f",
+        amount: 100,
+        status: "pending",
+        email: "m@example.com",
+    },
+    // ...
+]
 
 
 const AccountsPage = () => {
@@ -32,7 +57,7 @@ const AccountsPage = () => {
 
               </CardHeader>
               <CardContent>
-                  <p>Card Content</p>
+                  <DataTable columns={columns} data={data} />
               </CardContent>
               <CardFooter>
                   <p>Card Footer</p>
