@@ -10,7 +10,7 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
-    useReactTable,
+    useReactTable, Row,
 } from "@tanstack/react-table"
 
 import {
@@ -24,18 +24,23 @@ import {
 import {Button} from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
 import {useState} from "react";
+import {Trash} from "lucide-react";
 
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     filterKey: string
+    onDelete: (rows: Row<TData>[]) => void
+    disabled: boolean
 }
 
 export function DataTable<TData, TValue>({
 columns,
 data,
-    filterKey
+filterKey,
+onDelete,
+disabled
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -72,6 +77,18 @@ data,
                     }
                     className="max-w-sm"
                 />
+                {/*select rows after filter is applied as long as length is greater than zero and renders a button to delete selected rows*/}
+                {table.getFilteredSelectedRowModel().rows.length > 0 && (
+                    <Button
+                        disabled={disabled}
+                        size='sm'
+                        variant='outline'
+                        className='ml-auto font-normal text-xs'
+                    >
+                        <Trash className='size-4 mr-2' />
+                        Delete ({table.getFilteredSelectedRowModel().rows.length})
+                    </Button>
+                )}
             </div>
             <div className="rounded-md border">
                 <Table>
