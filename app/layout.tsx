@@ -26,7 +26,7 @@ export default function RootLayout({
             {/*sheet provider is used to render the new account sheet*/}
             <SheetProvider />
             {/*the query provider has 'use client but since passed as children there is no problem'*/}
-            <Toaster />
+            <Toaster position='top-center' richColors />
             {children}
         </QueryProvider>
         </body>
