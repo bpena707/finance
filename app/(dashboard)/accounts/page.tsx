@@ -23,11 +23,30 @@ async function getData(): Promise<Payment[]> {
             status: "pending",
             email: "m@example.com",
         },
+
         // ...
     ]
 }
 
 const data: Payment[] = [
+    {
+        id: "728ed52f",
+        amount: 100,
+        status: "pending",
+        email: "a@example.com",
+    },
+    {
+        id: "728ed52f",
+        amount: 100,
+        status: "pending",
+        email: "m@example.com",
+    },
+    {
+        id: "728ed52f",
+        amount: 100,
+        status: "pending",
+        email: "m@example.com",
+    },
     {
         id: "728ed52f",
         amount: 100,
@@ -57,7 +76,7 @@ const AccountsPage = () => {
 
               </CardHeader>
               <CardContent>
-                  <DataTable columns={columns} data={data} />
+                  <DataTable columns={columns} data={data} filterKey='email' />
               </CardContent>
               <CardFooter>
                   <p>Card Footer</p>
