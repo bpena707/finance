@@ -3,9 +3,10 @@ import {accounts, insertAccountSchema,} from "@/db/schema";
 import {db} from "@/db/drizzle";
 import {clerkMiddleware, getAuth} from "@hono/clerk-auth";
 import { HTTPException } from "hono/http-exception";
-import {eq} from "drizzle-orm";
+import {eq, and, inArray} from "drizzle-orm";
 import {zValidator} from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2"
+import {z} from "zod";
 
 const app = new Hono()
 
@@ -38,7 +39,6 @@ const app = new Hono()
         // uses the insert account schema but only certain fields are passed to the front end
         zValidator('json', insertAccountSchema.pick({
             name: true,
-
         })),
         async (c) => {
             const auth = getAuth(c)
@@ -54,6 +54,36 @@ const app = new Hono()
                 ...values,
             }).returning()
 
+            return c.json({ data })
+        }
+    )
+    .post(
+        "/bulk-delete",
+        clerkMiddleware(),
+        zValidator (
+            "json",
+            z.object({
+                ids: z.array(z.string())
+            })),
+        async (c) => {
+            const auth = getAuth(c)
+            const values = c.req.valid("json")
+
+            if (!auth?.userId) {
+                return c.json({ error: "Unauthorized" }, 401)
+            }
+
+            const data = await db
+                .delete(accounts)
+                .where(
+                    and(
+                        eq(accounts.userId, auth.userId), //ensure user can only delete their own accounts
+                        inArray(accounts.id, values.ids) //ensure only accounts that exist are deleted
+                    )
+                )
+                .returning({
+                    id: accounts.id
+                })
             return c.json({ data })
         }
     )
