@@ -1,0 +1,39 @@
+import { InferRequestType, InferResponseType } from "hono";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { client } from "@/lib/hono";
+import {toast} from "sonner";
+
+// The ResponseType uses the array of the bulk delete to access the accounts
+type ResponseType = InferResponseType<typeof client.api.accounts["bulk-delete"]["$post"]>;
+// this is what is accepteb by the endpoint. json gets the zValidator from the accounts.ts file
+type RequestType = InferRequestType<typeof client.api.accounts["bulk-delete"]["$post"]>["json"];
+
+export const useBulkDeleteAccounts = () => {
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation<
+        ResponseType,
+        Error,
+        RequestType
+    >({
+        mutationFn: async (json) => {
+            const response = await client.api.accounts["bulk-delete"].$post({json});
+            return await response.json();
+
+        },
+        onSuccess: () => {
+            //refetch all accounts after creating a new account
+            toast.success("Accounts deleted successfully");
+            queryClient.invalidateQueries({ queryKey: ["accounts"] });
+        //     TODO: Also invalidate summary
+        },
+        onError: () => {
+            toast.error("Failed to delete accounts");
+        }
+    });
+
+    return mutation;
+
+
+};
