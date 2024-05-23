@@ -25,6 +25,7 @@ import {Button} from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
 import {useState} from "react";
 import {Trash} from "lucide-react";
+import {useConfirm} from "@/hooks/use-confirm";
 
 
 interface DataTableProps<TData, TValue> {
@@ -42,6 +43,11 @@ filterKey,
 onDelete,
 disabled
 }: DataTableProps<TData, TValue>) {
+    const [ConfirmDialog, confirm] = useConfirm(
+        "Delete",
+        "Are you sure you want to delete the selected row(s)?"
+    )
+
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
@@ -68,6 +74,7 @@ disabled
 
     return (
         <div>
+            <ConfirmDialog />
             <div className="flex items-center py-4">
                 <Input
                     placeholder={`Filter ${filterKey}...`}
@@ -84,9 +91,12 @@ disabled
                         size='sm'
                         variant='outline'
                         className='ml-auto font-normal text-xs'
-                        onClick={() => {
-                            onDelete(table.getFilteredSelectedRowModel().rows)
-                            table.resetRowSelection()
+                        onClick={async () => {
+                            const ok = await confirm()
+                            if (ok) {
+                                onDelete(table.getFilteredSelectedRowModel().rows)
+                                table.resetRowSelection()
+                            }
                         }}
                     >
                         <Trash className='size-4 mr-2' />
