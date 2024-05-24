@@ -12,6 +12,7 @@ import {z} from "zod";
 import {useCreateAccount} from "@/features/hooks/use-create-account";
 import {useOpenAccount} from "@/features/hooks/use-open-account";
 import {useGetAccount} from "@/features/accounts/api/use-get-account";
+import {Loader2} from "lucide-react";
 
 const formSchema = insertAccountSchema.pick({
     name: true,
@@ -24,6 +25,8 @@ export const EditAccountSheet = () => {
 
     const accountQuery = useGetAccount(id)
     const mutation = useCreateAccount()
+
+    const isLoading = accountQuery.isLoading
 
     // the mutation hook will handle the form submission. object is used to continue on success and close sheet
     const onSubmit = (values: FormValues) => {
@@ -50,11 +53,18 @@ export const EditAccountSheet = () => {
                       Create a new account to track your transactions.
                   </SheetDescription>
               </SheetHeader>
-                <AccountForm
-                    onSubmit={onSubmit}
-                    disabled={mutation.isPending}
-                    defaultValues={defaultValues}
-                />
+              {isLoading ? (
+                  <div className='absolute inset-0 flex items-center'>
+                      <Loader2 className='size-4 text-muted-foreground animate-spin' />
+                  </div>
+              ) : (
+                  <AccountForm
+                  onSubmit={onSubmit}
+                  disabled={mutation.isPending}
+                  defaultValues={defaultValues}
+                  />
+              )
+              }
           </SheetContent>
       </Sheet>
   )
