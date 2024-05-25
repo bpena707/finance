@@ -13,6 +13,7 @@ import {useCreateAccount} from "@/features/accounts/api/use-create-account";
 import {useOpenAccount} from "@/features/hooks/use-open-account";
 import {useGetAccount} from "@/features/accounts/api/use-get-account";
 import {Loader2} from "lucide-react";
+import {useEditAccount} from "@/features/accounts/api/use-edit-account";
 
 const formSchema = insertAccountSchema.pick({
     name: true,
@@ -24,13 +25,15 @@ export const EditAccountSheet = () => {
     const {isOpen, onClose, id} = useOpenAccount()
 
     const accountQuery = useGetAccount(id)
-    const mutation = useCreateAccount()
+    const editMutation = useEditAccount(id)
+
+    const isPending = editMutation.isPending
 
     const isLoading = accountQuery.isLoading
 
     // the mutation hook will handle the form submission. object is used to continue on success and close sheet
     const onSubmit = (values: FormValues) => {
-        mutation.mutate(values, {
+        editMutation.mutate(values, {
             onSuccess: () => {
                 onClose()
             }
@@ -61,7 +64,7 @@ export const EditAccountSheet = () => {
                   <AccountForm
                       id={id}
                     onSubmit={onSubmit}
-                    disabled={mutation.isPending}
+                    disabled={isPending}
                     defaultValues={defaultValues}
                   />
               )
