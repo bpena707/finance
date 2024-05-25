@@ -25,6 +25,7 @@ export const EditAccountSheet = () => {
     const {isOpen, onClose, id} = useOpenAccount()
 
     const accountQuery = useGetAccount(id)
+    // @ts-ignore
     const editMutation = useEditAccount(id)
 
     const isPending = editMutation.isPending

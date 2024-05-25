@@ -172,6 +172,47 @@ const app = new Hono()
             return c.json({ data })
         }
     )
+    .delete(
+        "/:id",
+        clerkMiddleware(),
+        // chained zValidators to validate the id and the json object
+        zValidator(
+            "param",
+            z.object({
+                id: z.string().optional()
+            })),
+        async (c) => {
+            const auth = getAuth(c)
+            const { id } = c.req.valid("param")
+
+            if(!id) {
+                return c.json({ error: "Invalid id" }, 400)
+            }
+
+            if (!auth?.userId) {
+                return c.json({ error: "Unauthorized" }, 401)
+            }
+
+            // delete the account and return the id of the deleted account
+            const [data] = await db
+                .delete(accounts)
+                .where(
+                    and(
+                        eq(accounts.userId, auth.userId),
+                        eq(accounts.id, id)
+                    )
+                )
+                .returning({
+                    id: accounts.id
+                })
+
+            if (!data) {
+                return c.json({ error: "Account not found" }, 404)
+            }
+            return c.json({ data })
+        }
+    )
+
 
 export default app
 
