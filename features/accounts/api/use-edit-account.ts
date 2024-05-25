@@ -9,7 +9,7 @@ type ResponseType = InferResponseType<typeof client.api.accounts[":id"]["$patch"
 // this is what is accepteb by the endpoint. json gets the zValidator from the accounts.ts file
 type RequestType = InferRequestType<typeof client.api.accounts[":id"]["$patch"]>["json"]
 
-export const useEditAccount = (id: string) => {
+export const useEditAccount = (id?: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<

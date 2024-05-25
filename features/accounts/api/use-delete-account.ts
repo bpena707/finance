@@ -7,7 +7,7 @@ import {toast} from "sonner";
 // only the ResponseType is needed to delete
 type ResponseType = InferResponseType<typeof client.api.accounts[":id"]["$delete"]>;
 
-export const useDeleteAccount = (id: string) => {
+export const useDeleteAccount = (id?: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<
