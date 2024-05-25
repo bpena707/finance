@@ -9,7 +9,7 @@ import {
 import {AccountForm} from "@/features/accounts/components/account-form";
 import {insertAccountSchema} from "@/db/schema";
 import {z} from "zod";
-import {useCreateAccount} from "@/features/hooks/use-create-account";
+import {useCreateAccount} from "@/features/accounts/api/use-create-account";
 import {useOpenAccount} from "@/features/hooks/use-open-account";
 import {useGetAccount} from "@/features/accounts/api/use-get-account";
 import {Loader2} from "lucide-react";
@@ -60,9 +60,9 @@ export const EditAccountSheet = () => {
               ) : (
                   <AccountForm
                       id={id}
-                  onSubmit={onSubmit}
-                  disabled={mutation.isPending}
-                  defaultValues={defaultValues}
+                    onSubmit={onSubmit}
+                    disabled={mutation.isPending}
+                    defaultValues={defaultValues}
                   />
               )
               }

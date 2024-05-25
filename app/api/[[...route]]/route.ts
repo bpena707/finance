@@ -19,6 +19,7 @@ const routes = app
 //allows hono to use the route handlers
 export const GET = handle(app)
 export const POST = handle(app)
+export const PATCH = handle(app)
 
 //to generate the rpc type
 export type AppType = typeof routes
