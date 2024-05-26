@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {Button} from "@/components/ui/button";
 import {Edit, MoreHorizontal, Trash} from "lucide-react";
-import {useOpenAccount} from "@/features/hooks/use-open-account";
+import {useOpenAccount} from "@/features/accounts/hooks/use-open-account";
 import {useDeleteAccount} from "@/features/accounts/api/use-delete-account";
 import {useConfirm} from "@/hooks/use-confirm";
 

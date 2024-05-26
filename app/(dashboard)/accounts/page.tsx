@@ -11,11 +11,11 @@ import {
 import {Button} from "@/components/ui/button";
 import {DataTable} from "@/components/ui/data-table";
 import {Loader2, Plus} from "lucide-react";
-import {useNewAccount} from "@/features/hooks/use-new-account";
+import {useNewAccount} from "@/features/accounts/hooks/use-new-account";
 import {columns} from "@/app/(dashboard)/accounts/columns";
 import {useGetAccounts} from "@/features/accounts/api/use-get-accounts";
 import {Skeleton} from "@/components/ui/skeleton";
-import {useBulkDeleteAccounts} from "@/features/accounts/api/use-bulk-delete";
+import {useBulkDeleteAccounts} from "@/features/accounts/api/use-bulk-delete-accounts";
 
 
 const AccountsPage = () => {

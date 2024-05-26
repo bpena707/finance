@@ -1,13 +1,12 @@
 //this is where all the api requests for accounts are handled
 
-import { Hono } from "hono";
-import { categories, insertCategorySchema,} from "@/db/schema";
+import {Hono} from "hono";
+import {categories, insertCategorySchema,} from "@/db/schema";
 import {db} from "@/db/drizzle";
 import {clerkMiddleware, getAuth} from "@hono/clerk-auth";
-import { HTTPException } from "hono/http-exception";
-import {eq, and, inArray} from "drizzle-orm";
+import {and, eq, inArray} from "drizzle-orm";
 import {zValidator} from "@hono/zod-validator";
-import { createId } from "@paralleldrive/cuid2"
+import {createId} from "@paralleldrive/cuid2"
 import {z} from "zod";
 
 const app = new Hono()
