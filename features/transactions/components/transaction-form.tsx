@@ -33,7 +33,7 @@ type Props ={
 }
 
 
-export const AccountForm = ({
+export const TransactionForm = ({
     id,
     defaultValues,
     onSubmit,
