@@ -139,6 +139,37 @@ const app = new Hono()
         }
     )
     .post(
+        "/bulk-create",
+        clerkMiddleware(),
+        zValidator(
+            "json",
+            //accepts an array of objects rather than a single object transaction
+            z.array(
+                insertTransactionSchema.omit({
+                    id: true
+                })
+            )
+        ),
+        async (c) => {
+            const auth = getAuth(c)
+            const values = c.req.valid("json")
+
+            if (!auth?.userId) {
+                return c.json({ error: "Unauthorized" }, 401)
+            }
+
+            //not destructuring [] because we are already passing an array
+            const data = await db.insert(transactions).values(
+                values.map((value) => ({
+                    id: createId(),
+                    ...value,
+                }))
+            ).returning()
+
+            return c.json({ data })
+        }
+    )
+    .post(
         "/bulk-delete",
         clerkMiddleware(),
         zValidator (
