@@ -4,18 +4,18 @@
 import {useQuery} from "@tanstack/react-query";
 import {client} from "@/lib/hono";
 
-export const useGetAccount = (id?: string) => {
+export const useGetTransaction = (id?: string) => {
     const query = useQuery({
         enabled: !!id,
-        queryKey: ["account", { id }],
+        queryKey: ["transaction", { id }],
         queryFn: async () => {
             // unlike axios or fetch, the client.api is a type safe RPC client and doesnt automatically need try catch
-            const response = await client.api.accounts[":id"].$get({
+            const response = await client.api.transactions[":id"].$get({
                 param: { id }
             })
 
             if (!response.ok) {
-                throw new Error('Failed to fetch account')
+                throw new Error('Failed to fetch transaction')
             }
 
             // data object is returned from accounts.ts
