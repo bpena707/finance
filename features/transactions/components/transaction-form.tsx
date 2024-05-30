@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import {zodResolver} from "@hookform/resolvers/zod";
 import {insertAccountSchema, insertTransactionSchema} from "@/db/schema";
+import {Select} from "@/components/select";
 
 const formSchema = z.object({
     date: z.coerce.date(),
@@ -65,7 +66,7 @@ export const TransactionForm = ({
     })
 
     const handleSubmit = (values: FormValues) => {
-        onSubmit(values)
+        console.log({ values })
     }
 
     const handleDelete = () => {
@@ -77,15 +78,18 @@ export const TransactionForm = ({
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="accountId"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Name</FormLabel>
+                            <FormLabel>Account</FormLabel>
                             <FormControl>
-                                <Input
+                                <Select
+                                    options={accountOptions}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    onCreate={onCreateAccount}
+                                    placeholder="Select an account"
                                     disabled={disabled}
-                                    placeholder="e.g. Cash, Bank, Credit Card"
-                                    {...field} //handles all of the event handlers such as onChange, onBlur, value
                                 />
                             </FormControl>
                         </FormItem>
