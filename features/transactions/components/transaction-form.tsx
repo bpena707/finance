@@ -76,6 +76,7 @@ export const TransactionForm = ({
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
+
                 <FormField
                     control={form.control}
                     name="accountId"
@@ -89,6 +90,25 @@ export const TransactionForm = ({
                                     onChange={field.onChange}
                                     onCreate={onCreateAccount}
                                     placeholder="Select an account"
+                                    disabled={disabled}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="categoryId"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Category</FormLabel>
+                            <FormControl>
+                                <Select
+                                    options={categoryOptions}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    onCreate={onCreateCategory}
+                                    placeholder="Select an category"
                                     disabled={disabled}
                                 />
                             </FormControl>
