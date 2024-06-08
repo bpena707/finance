@@ -35,8 +35,6 @@ export const Actions = ({id}: Props) => {
         }
     }
 
-
-
     return (
         <>
             <ConfirmDialog />

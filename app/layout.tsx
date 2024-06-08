@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from '@clerk/nextjs'
 import {QueryProvider} from "@/providers/query-provider";
-import {SheetProvider} from "@/providers/sheet-provider";
+import {DialogProvider} from "@/providers/dialog-provider";
 import {Toaster} from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,7 +24,7 @@ export default function RootLayout({
         <body className={inter.className}>
         <QueryProvider>
             {/*sheet provider is used to render the new account sheet*/}
-            <SheetProvider />
+            <DialogProvider />
             {/*the query provider has 'use client but since passed as children there is no problem'*/}
             <Toaster position='top-center' richColors />
             {children}

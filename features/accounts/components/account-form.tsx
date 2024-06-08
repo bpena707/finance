@@ -32,7 +32,6 @@ type Props ={
     disabled?: boolean;
 }
 
-
 export const AccountForm = ({
     id,
     defaultValues,
@@ -73,6 +72,7 @@ export const AccountForm = ({
                         </FormItem>
                     )}
                 />
+
                 <Button className='w-full' disabled={disabled}>
                     {id ? 'Save changes' : 'Create account'}
                 </Button>

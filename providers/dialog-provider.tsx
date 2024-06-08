@@ -10,7 +10,7 @@ import { EditCategorySheet } from "@/features/categories/components/edit-categor
 import { NewTransactionSheet } from "@/features/transactions/components/new-transaction-sheet";
 
 
-export const SheetProvider = ( ) => {
+export const DialogProvider = ( ) => {
     // const isMounted = useMountedState()
     //
     // if (!isMounted()) return null

@@ -213,8 +213,7 @@ const app = new Hono()
         clerkMiddleware(),
         // chained zValidators to validate the id and the json object
         zValidator(
-            "param",
-            z.object({
+            "param", z.object({
                 id: z.string().optional()
             })),
         zValidator(

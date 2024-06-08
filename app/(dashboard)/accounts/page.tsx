@@ -1,13 +1,6 @@
 'use client'
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
+import {Card, CardContent, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import {Button} from "@/components/ui/button";
 import {DataTable} from "@/components/ui/data-table";
 import {Loader2, Plus} from "lucide-react";
