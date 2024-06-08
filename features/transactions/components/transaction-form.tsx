@@ -18,6 +18,8 @@ import { Input } from "@/components/ui/input"
 import {zodResolver} from "@hookform/resolvers/zod";
 import {insertAccountSchema, insertTransactionSchema} from "@/db/schema";
 import {Select} from "@/components/select";
+import {DatePicker} from "@/components/date-picker";
+import {Textarea} from "@/components/ui/textarea";
 
 const formSchema = z.object({
     date: z.coerce.date(),
@@ -76,7 +78,21 @@ export const TransactionForm = ({
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
-
+                <FormField
+                    control={form.control}
+                    name="date"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormControl>
+                                <DatePicker
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    disabled={disabled}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
                 <FormField
                     control={form.control}
                     name="accountId"
@@ -110,6 +126,23 @@ export const TransactionForm = ({
                                     onCreate={onCreateCategory}
                                     placeholder="Select an category"
                                     disabled={disabled}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="notes"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Notes</FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    {...field}
+                                    value={field.value || ""}
+                                    disabled={disabled}
+                                    placeholder="Optional notes..."
                                 />
                             </FormControl>
                         </FormItem>
