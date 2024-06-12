@@ -3,8 +3,6 @@
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -12,21 +10,21 @@ import {Button} from "@/components/ui/button";
 import {DataTable} from "@/components/ui/data-table";
 import {Loader2, Plus} from "lucide-react";
 import {useNewTransaction} from "@/features/transactions/hooks/use-new-transaction";
-import {columns} from "@/app/(dashboard)/accounts/columns";
-import {useGetAccounts} from "@/features/accounts/api/use-get-accounts";
+import {columns} from "@/app/(dashboard)/transactions/columns";
+import {useGetTransactions} from "@/features/transactions/api/use-get-transactions";
 import {Skeleton} from "@/components/ui/skeleton";
-import {useBulkDeleteAccounts} from "@/features/accounts/api/use-bulk-delete-accounts";
+import {useBulkDeleteTransactions} from "@/features/transactions/api/use-bulk-delete-transactions";
 
 
 const TransactionsPage = () => {
     const newTransaction = useNewTransaction()
-    const accountsQuery = useGetAccounts()
-    const accounts = accountsQuery.data || []
-    const deleteAccounts = useBulkDeleteAccounts()
+    const transactionsQuery = useGetTransactions()
+    const transactions = transactionsQuery.data || []
+    const deleteTransactions = useBulkDeleteTransactions()
 
-    const isDisabled = accountsQuery.isLoading || deleteAccounts.isPending
+    const isDisabled = transactionsQuery.isLoading || deleteTransactions.isPending
 
-    if(accountsQuery.isLoading){
+    if(transactionsQuery.isLoading){
         return (
             <div>
                 <Card className='w-full pb-10'>
@@ -62,17 +60,15 @@ const TransactionsPage = () => {
               <CardContent>
                   <DataTable
                       columns={columns}
-                      data={accounts}
+                      data={transactions}
                       filterKey='email'
                       onDelete={(row) => {
                           const ids = row.map((r) => r.original.id)
-                          deleteAccounts.mutate({ids})
+                          deleteTransactions.mutate({ids})
                       }}
                       disabled={isDisabled}/>
               </CardContent>
-              <CardFooter >
-                  <p>Card Footer</p>
-              </CardFooter>
+
           </Card>
 
       </div>
