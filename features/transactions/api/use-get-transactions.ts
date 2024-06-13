@@ -4,6 +4,7 @@
 import {useQuery} from "@tanstack/react-query";
 import {client} from "@/lib/hono";
 import { useSearchParams } from "next/navigation";
+import {convertAmountFromMiliunits} from "@/lib/utils";
 
 export function useGetTransactions() {
     const params = useSearchParams()
@@ -29,7 +30,12 @@ export function useGetTransactions() {
 
             // data object is returned from accounts.ts
             const { data } = await response.json()
-            return data
+            // the data is then mapped to convert the amount from miliunits to the actual amount which is closer to the backend
+            //this is known as data conversion in react query
+            return data.map((transaction) => ({
+                ...transaction,
+                amount: convertAmountFromMiliunits(transaction.amount)
+            }))
         }
     })
     return query

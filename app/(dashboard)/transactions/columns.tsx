@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import {Actions} from "@/app/(dashboard)/accounts/actions";
 import {format} from "date-fns";
 import {formatCurrency} from "@/lib/utils";
+import {Badge} from "@/components/ui/badge";
 
 // this is a type definition for the data that will be returned from the API part of the github v4.3 doc
 export type ResponseType = InferResponseType<typeof client.api.transactions.$get, 200>["data"][0]
@@ -89,7 +90,7 @@ export const columns: ColumnDef<ResponseType>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Category
+                    Payee
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
@@ -103,7 +104,7 @@ export const columns: ColumnDef<ResponseType>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Category
+                    Amount
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
@@ -112,8 +113,33 @@ export const columns: ColumnDef<ResponseType>[] = [
             const amount = parseFloat(row.getValue("amount"))
 
             return(
-                <span>
+                <Badge
+                    variant={amount < 0 ? "destructive" : "primary"}
+                    className='text-xs font-medium px-3.5 py-2.5'
+                >
                     {formatCurrency(amount)}
+                </Badge>
+            )
+        }
+    },
+    {
+        accessorKey: "account",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Account
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
+            const date = row.getValue("date") as Date
+            return(
+                <span>
+                    {row.original.account}
                 </span>
             )
         }
