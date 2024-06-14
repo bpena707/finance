@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from "@/lib/hono";
 import {toast} from "sonner";
+import transactions from "@/app/api/[[...route]]/transactions";
 
 // The request type is inferred from the client.api.accounts.$post function either gives an error or data
 type ResponseType = InferResponseType<typeof client.api.accounts[":id"]["$patch"]>;
@@ -32,6 +33,7 @@ export const useEditAccount = (id?: string) => {
           //primary update account with id as key and all accounts
           queryClient.invalidateQueries({ queryKey: ["accounts", { id }] });
             queryClient.invalidateQueries({ queryKey: ["accounts"] });
+            queryClient.invalidateQueries({ queryKey: ["transactions"] });
       },
       onError: () => {
           toast.error("Failed to edit account");
