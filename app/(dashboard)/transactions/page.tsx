@@ -14,9 +14,25 @@ import {columns} from "@/app/(dashboard)/transactions/columns";
 import {useGetTransactions} from "@/features/transactions/api/use-get-transactions";
 import {Skeleton} from "@/components/ui/skeleton";
 import {useBulkDeleteTransactions} from "@/features/transactions/api/use-bulk-delete-transactions";
+import {useState} from "react";
+import {UploadButton} from "@/app/(dashboard)/transactions/upload-button";
+
+//enum manipulates the variant of the page whether it is a list of transactions or import csv file
+enum VARIANTS {
+    LIST = "LIST",
+    IMPORT = "IMPORT",
+}
+
+const INITIAL_IMPORT_RESULTS ={
+    data: [],
+    errors: [],
+    meta:{}
+}
 
 
 const TransactionsPage = () => {
+    const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST)
+
     const newTransaction = useNewTransaction()
     const transactionsQuery = useGetTransactions()
     const transactions = transactionsQuery.data || []
@@ -41,6 +57,16 @@ const TransactionsPage = () => {
         )
     }
 
+    if (variant === VARIANTS.IMPORT) {
+        return (
+            <>
+                <div>
+                    this is a screen form import
+                </div>
+            </>
+        )
+    }
+
   return (
       <div className='max-w-2xl mx-auto w-full pb-10 -mt-24'>
           <Card className='border-none drop-shadow-sm'>
@@ -48,20 +74,22 @@ const TransactionsPage = () => {
                   <CardTitle className='text-xl line-clamp-1'>
                       Transaction History
                   </CardTitle>
-                  <Button
-                      onClick={newTransaction.onOpen}
-                      size='sm'
-                  >
-                      <Plus className='size-4 mr-2' />
-                      Add new
-                  </Button>
-
+                  <div className='flex items-center gap-x-2'>
+                      <Button
+                          onClick={newTransaction.onOpen}
+                          size='sm'
+                      >
+                          <Plus className='size-4 mr-2' />
+                          Add new
+                      </Button>
+                      <UploadButton onUpload={() => {}} />
+                  </div>
               </CardHeader>
               <CardContent>
                   <DataTable
                       columns={columns}
                       data={transactions}
-                      filterKey='email'
+                      filterKey='payee'
                       onDelete={(row) => {
                           const ids = row.map((r) => r.original.id)
                           deleteTransactions.mutate({ids})

@@ -1,5 +1,5 @@
 // custom date-picker component using shadcn and react-date-picker
-
+'use client'
 import * as React from 'react';
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -47,7 +47,7 @@ disabled,
                         selected={value}
                         onSelect={onChange}
                         disabled={disabled}
-                        initialFocus
+                        initialFocus={false}
                     />
                 </PopoverContent>
             </Popover>

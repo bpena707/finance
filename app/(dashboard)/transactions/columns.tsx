@@ -6,12 +6,14 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import {Button} from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"
-import {Actions} from "@/app/(dashboard)/accounts/actions";
+
 import {format} from "date-fns";
 import {formatCurrency} from "@/lib/utils";
 import {Badge} from "@/components/ui/badge";
 import {AccountColumn} from "@/app/(dashboard)/transactions/account-column";
 import {CategoryColumn} from "@/app/(dashboard)/transactions/category-column";
+import {useOpenTransaction} from "@/features/transactions/hooks/use-open-transaction";
+import {Actions} from "./actions";
 
 // this is a type definition for the data that will be returned from the API part of the github v4.3 doc
 export type ResponseType = InferResponseType<typeof client.api.transactions.$get, 200>["data"][0]

@@ -104,8 +104,8 @@ const app = new Hono()
                 .innerJoin(accounts, eq(transactions.accountId, accounts.id))
                 .where(
                     and(
-                        eq(transactions.id, auth.userId),
-                        eq(accounts.id, id)
+                        eq(transactions.id, id),
+                        eq(accounts.userId, auth.userId),
                     )
                 )
             if (!data) {
