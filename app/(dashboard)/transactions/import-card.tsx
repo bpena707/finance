@@ -9,7 +9,8 @@ import {
 import {Button} from "@/components/ui/button";
 import {Plus} from "lucide-react";
 import {UploadButton} from "@/app/(dashboard)/transactions/upload-button";
-
+import {useState} from "react";
+import {ImportTable} from "@/app/(dashboard)/transactions/import-table";
 
 
 const dateFormat = 'yyyy-MM-dd HH:mm:ss'
@@ -36,6 +37,10 @@ export const ImportCard = ({
     onCancel,
     onSubmit
 }:Props) => {
+    const [selectedColumns, setSelectedColumns] = useState<SelectedColumnsState>({})
+    const headers = data[0]
+    const body = data.slice(1)
+
     return(
         <div className='max-w-2xl mx-auto w-full pb-10 -mt-24'>
             <Card className='border-none drop-shadow-sm'>
@@ -53,7 +58,7 @@ export const ImportCard = ({
                     </div>
                 </CardHeader>
                 <CardContent>
-                    hello
+                    <ImportTable headers={headers} body={body} selectedColumns={selectedColumns} onTableHeadSelectChange={() => {}} />
                 </CardContent>
             </Card>
         </div>
