@@ -16,6 +16,7 @@ import {Skeleton} from "@/components/ui/skeleton";
 import {useBulkDeleteTransactions} from "@/features/transactions/api/use-bulk-delete-transactions";
 import {useState} from "react";
 import {UploadButton} from "@/app/(dashboard)/transactions/upload-button";
+import {ImportCard} from "@/app/(dashboard)/transactions/import-card";
 
 //enum manipulates the variant of the page whether it is a list of transactions or import csv file
 enum VARIANTS {
@@ -32,9 +33,16 @@ const INITIAL_IMPORT_RESULTS ={
 
 const TransactionsPage = () => {
     const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST)
+    const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS)
 
     const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
+        setImportResults(results)
         setVariant(VARIANTS.IMPORT)
+    }
+
+    const onCancelImport = () => {
+        setImportResults(INITIAL_IMPORT_RESULTS)
+        setVariant(VARIANTS.LIST)
     }
 
     const newTransaction = useNewTransaction()
@@ -64,9 +72,11 @@ const TransactionsPage = () => {
     if (variant === VARIANTS.IMPORT) {
         return (
             <>
-                <div>
-                    this is a screen form import
-                </div>
+                <ImportCard
+                    data={importResults.data}
+                    onCancel={onCancelImport}
+                    onSubmit={() => {}}
+                />
             </>
         )
     }
