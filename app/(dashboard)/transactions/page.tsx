@@ -33,6 +33,10 @@ const INITIAL_IMPORT_RESULTS ={
 const TransactionsPage = () => {
     const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST)
 
+    const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
+        setVariant(VARIANTS.IMPORT)
+    }
+
     const newTransaction = useNewTransaction()
     const transactionsQuery = useGetTransactions()
     const transactions = transactionsQuery.data || []
@@ -82,7 +86,7 @@ const TransactionsPage = () => {
                           <Plus className='size-4 mr-2' />
                           Add new
                       </Button>
-                      <UploadButton onUpload={() => {}} />
+                      <UploadButton onUpload={onUpload} />
                   </div>
               </CardHeader>
               <CardContent>
